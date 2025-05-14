@@ -2,15 +2,41 @@ import { dbConnection } from "../Databases/SQLConn.js";
 import { createResponse } from "../Utils/utils.js";
 
 export default class PostDao {
-    constructor() {
+    constructor() { }
 
-    }
-
-    async create(req) {
+    async create({ auth_id, title, content, country, date_of_visit }) {
         return new Promise((resolve, reject) => {
             dbConnection.run(
-                "INSERT INTO posts ("
+                `INSERT INTO posts (author_id,title,content,country,date_of_visit)
+                VALUES (?,?,?,?,?)`
+                , [auth_id, title, content, country, date_of_visit],
+                function (err) {
+                    if (err) {
+                        return reject(createResponse(false, null, err))
+                    }
+                    if (this.changes === 0) {
+                        return resolve(createResponse(false, "No Records Inserted"))
+                    }
+                    resolve(createResponse(true, "Post created successfully", { id: this.lastID }, 201))
+                });
+        });
+    }
+
+    async getByID({ post_id }) {
+        return new Promise((resolve, reject) => {
+            dbConnection.get(
+                "SELECT * FROM posts WHERE id = ? ",
+                [post_id],
+                (err, row) => {
+                    if (err) return reject(createResponse(false, null, err));
+                    if (!row) return resolve(createResponse(false, "Post not found"))
+
+                    // returns the post if it's all good.
+                    resolve(createResponse(true, row, null, 201))
+
+                }
             )
-        })
+        });
     }
 }
+

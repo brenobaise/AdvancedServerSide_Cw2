@@ -7,9 +7,10 @@ import session from "express-session";
 import userAuthRoutes from "./routes/userAuthRoutes.js";
 // import adminRoutes from "./routes/admin.js";
 import countriesRoutes from "./routes/countries.js";
-import csrfProtection from "./middleware/csrf.js";
+// import csrfProtection from "./middleware/csrf.js";
 import authenticateJWT from "./middleware/jwtAuth.js";
 import { generateToken as generateCSRFToken } from './config/csrf.js';
+import blogPostRoutes from "./routes/posts.js"
 
 const app = express();
 const PORT = 5005;
@@ -38,12 +39,12 @@ app.use((req, res, next) => {
 });
 
 // CSRF protection to state-changing routes (POST, PUT, DELETE)
-app.use((req, res, next) => {
-  if (["POST", "PUT", "DELETE"].includes(req.method)) {
-    return csrfProtection(req, res, next);
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   if (["POST", "PUT", "DELETE"].includes(req.method)) {
+//     return csrfProtection(req, res, next);
+//   }
+//   next();
+// });
 
 
 
@@ -89,6 +90,8 @@ app.get("/signup", async (req, res) => {
   // otherwise the user can't access the route
   res.render("signup", { csrfToken });
 });
+
+app.use("/api", blogPostRoutes);
 
 
 // Apply authMiddleware for all protected routes

@@ -43,8 +43,6 @@ export class AuthService {
                 throw new Error("Missing required fields: email, password, fn, SN, and username");
             }
 
-
-
             // Hash the password
             const hashedPassword = await genHashPassword(password, 10);
             userData.password = hashedPassword;
