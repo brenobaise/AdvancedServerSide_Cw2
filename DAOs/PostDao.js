@@ -38,5 +38,24 @@ export default class PostDao {
             )
         });
     }
+
+    async update({ post_id, auth_id, title, content, country, date_of_visit }) {
+        return new Promise((resolve, reject) => {
+            dbConnection.run(`UPDATE posts SET title = ?, content = ?, country = ?, date_of_visit = ?
+                WHERE id = ? AND author_id = ? `,
+                [title, content, country, date_of_visit, post_id, auth_id],
+                function (err) {
+                    if (err) return reject(createResponse(false, null, err));
+                    // Either the post doesn't exist, or it doesn't belong to this author
+                    if (this.changes === 0) {
+                        return resolve(createResponse(false, "Post not found or not authorised"));
+                    }
+
+                    // update the post
+                    resolve(createResponse(true, "Post updated", null, 201))
+                }
+            )
+        })
+    }
 }
 
