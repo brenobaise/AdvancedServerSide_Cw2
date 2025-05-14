@@ -62,15 +62,29 @@ export default class PostDao {
 
     async delete({ post_id, auth_id }) {
         return new Promise((resolve, reject) => {
-            dbConnection.run(` DELETE FROM posts WHERE id = ? AND author_id = ?`,
-                [post_id, auth_id],
+            // 1) Remove reactions
+            dbConnection.run(
+                "DELETE FROM post_reactions WHERE post_id = ?",
+                [post_id],
                 function (err) {
                     if (err) return reject(createResponse(false, null, err));
-                    if (this.changes === 0) return resolve(createResponse(false, "Post not found or not authorised"))
-                })
-            resolve(createResponse(true, "Post deleted", null, 204))
-        })
+                    // 2) Remove the post
+                    dbConnection.run(
+                        "DELETE FROM posts WHERE id = ? AND author_id = ?",
+                        [post_id, auth_id],
+                        function (err2) {
+                            if (err2) return reject(createResponse(false, null, err2));
+                            if (this.changes === 0) {
+                                return resolve(createResponse(false, "Post not found or not authorised"));
+                            }
+                            resolve(createResponse(true, "Post and its reactions deleted"));
+                        }
+                    );
+                }
+            );
+        });
     }
+
 
 }
 
