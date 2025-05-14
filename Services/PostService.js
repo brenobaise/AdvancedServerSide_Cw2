@@ -28,4 +28,10 @@ export default class PostService {
 
         return await this.postDao.update({ post_id, auth_id, title, content, country, date_of_visit });
     }
+    async deletePost({ post_id, auth_id }) {
+        if (!post_id || isNaN(post_id) || !auth_id) {
+            return createResponse(false, "Missing post id or author id");
+        }
+        return await this.postDao.delete({ post_id, auth_id });
+    }
 }

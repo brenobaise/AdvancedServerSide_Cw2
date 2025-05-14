@@ -53,5 +53,23 @@ router.put("/posts/:id", async (req, res) => {
 
 });
 
+router.delete("/posts/:id", async (req, res) => {
+    try {
+        const post_id = parseInt(req.params.id, 10);
+        // for testing without auth, read author_id from body:
+        const { author_id } = req.body;
+
+        const result = await postService.deletePost({ post_id, auth_id: author_id });
+        res.status(result.success ? 200 : 400).json(result);
+    } catch (err) {
+        console.error("DELETE /posts/:id error:", err);
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: err.message,
+        });
+    }
+});
+
 export default router;
 

@@ -1,3 +1,4 @@
+import { rejects } from "assert";
 import { dbConnection } from "../Databases/SQLConn.js";
 import { createResponse } from "../Utils/utils.js";
 
@@ -32,7 +33,7 @@ export default class PostDao {
                     if (!row) return resolve(createResponse(false, "Post not found"))
 
                     // returns the post if it's all good.
-                    resolve(createResponse(true, row, null, 201))
+                    resolve(createResponse(true, row, null, 200))
 
                 }
             )
@@ -56,6 +57,20 @@ export default class PostDao {
                 }
             )
         })
+
     }
+
+    async delete({ post_id, auth_id }) {
+        return new Promise((resolve, reject) => {
+            dbConnection.run(` DELETE FROM posts WHERE id = ? AND author_id = ?`,
+                [post_id, auth_id],
+                function (err) {
+                    if (err) return reject(createResponse(false, null, err));
+                    if (this.changes === 0) return resolve(createResponse(false, "Post not found or not authorised"))
+                })
+            resolve(createResponse(true, "Post deleted", null, 204))
+        })
+    }
+
 }
 
