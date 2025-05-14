@@ -12,18 +12,23 @@
         border-bottom: 1px solid #ccc;
         margin-bottom: 1rem;
         padding-bottom: 1rem;
+        padding: 48px;
+        font-size: large;
       }
       .post h2 {
         margin: 0.2rem 0;
       }
       .post small {
         color: #666;
+        font-size: large;
       }
     </style>
   </head>
   <body>
+    <%- include('partials/header') %>
     <h1>All Blog Posts</h1>
     <div id="posts-container">Loading…</div>
     <script src="/js/load-posts.js"></script>
+    <%- include('partials/footer') %>
   </body>
 </html>

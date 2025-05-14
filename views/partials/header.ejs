@@ -1,4 +1,6 @@
-<link rel="stylesheet" href="/css/header.css">
+<link rel="stylesheet" href="/css/header.css" />
+<link rel="stylesheet" href="/css/styles.css" />
+
 <header>
   <h1>API Key Management</h1>
 
@@ -7,10 +9,10 @@
       <a href="/api/admin/dashboard">Dashboard</a>
     </nav>
 
-    <div class="spacer"></div> <!-- Add this if you want space between nav and logout -->
+    <div class="spacer"></div>
+    <!-- Add this if you want space between nav and logout -->
 
     <form action="/logout" method="POST">
-      <%- include('_csrf') %>
       <button type="submit" class="logout-btn">Logout</button>
     </form>
   </div>

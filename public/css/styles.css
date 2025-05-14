@@ -11,3 +11,9 @@
       button:hover {
           background-color: #0056b3;
       }
+
+          html,
+          body {
+              margin: 0;
+              padding: 0;
+          }
