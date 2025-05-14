@@ -4,6 +4,21 @@ import { createResponse } from "../Utils/utils.js";
 
 export default class PostDao {
     constructor() { }
+    async getAll() {
+        return new Promise((resolve, reject) => {
+            dbConnection.all(
+                `SELECT * 
+               FROM posts
+              ORDER BY date_posted DESC`,
+                [],
+                (err, rows) => {
+                    if (err) return reject(createResponse(false, null, err));
+                    resolve(createResponse(true, rows));
+                }
+            );
+        });
+    }
+
 
     async create({ auth_id, title, content, country, date_of_visit }) {
         return new Promise((resolve, reject) => {

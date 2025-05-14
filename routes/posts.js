@@ -6,10 +6,10 @@ import authenticateJWT from "../middleware/jwtAuth.js";
 const router = express.Router();
 const postService = new PostService();
 
-router.post("/posts", async (req, res) => {
+router.get("/posts", async (req, res) => {
     try {
-        const result = await postService.createNewPost(req.body);
-        res.status(result.success ? 201 : 400).json(result);
+        const result = await postService.getAllPosts();
+        res.status(result.success ? 200 : 400).json(result);
     } catch (err) {
         res.status(500).json({
             success: false,
@@ -18,6 +18,7 @@ router.post("/posts", async (req, res) => {
         });
     }
 })
+
 
 router.get("/posts/:id", async (req, res) => {
     try {
@@ -31,6 +32,22 @@ router.get("/posts/:id", async (req, res) => {
             message: "Server error",
             error: err.message,
         })
+    }
+})
+
+
+router.use(authenticateJWT);
+
+router.post("/posts", async (req, res) => {
+    try {
+        const result = await postService.createNewPost(req.body);
+        res.status(result.success ? 201 : 400).json(result);
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "Server Error",
+            error: err.message,
+        });
     }
 })
 
@@ -62,7 +79,6 @@ router.delete("/posts/:id", async (req, res) => {
         const result = await postService.deletePost({ post_id, auth_id: author_id });
         res.status(result.success ? 200 : 400).json(result);
     } catch (err) {
-        console.error("DELETE /posts/:id error:", err);
         res.status(500).json({
             success: false,
             message: "Server error",

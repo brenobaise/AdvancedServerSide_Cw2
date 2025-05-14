@@ -7,6 +7,9 @@ export default class PostService {
         this.postDao = new PostDao();
     }
 
+    async getAllPosts() {
+        return await this.postDao.getAll();
+    }
     async createNewPost(data) {
         const { auth_id, title, content, country, date_of_visit } = data;
 

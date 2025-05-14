@@ -91,6 +91,8 @@ app.get("/signup", async (req, res) => {
   res.render("signup", { csrfToken });
 });
 
+app.get("/blogposts", (req, res) => res.render("blogposts"));
+
 app.use("/api", blogPostRoutes);
 
 
