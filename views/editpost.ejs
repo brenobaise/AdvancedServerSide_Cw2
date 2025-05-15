@@ -1,8 +1,9 @@
 <%- include('partials/header') %>
-
+<link rel="stylesheet" href="/css/editpost.css" />
 <main class="container">
-  <h2>Edit Post</h2>
   <form id="editPostForm" class="post-form">
+    <h2>Edit Post</h2>
+
     <!-- CSRF token for AJAX -->
     <input
       type="hidden"
@@ -19,10 +20,12 @@
       post.title.replace(/"/g, '&quot;') %>" />
     </label>
 
-    <label>
-      Country <input type="text" name="country" required value="<%-
-      post.country.replace(/"/g, '&quot;') %>" />
-    </label>
+    <div class="form-group">
+      <label for="countrySelect">Country</label>
+      <select name="country" id="countrySelect" required>
+        <option value="">Loading countries…</option>
+      </select>
+    </div>
 
     <label>
       Date of Visit
@@ -47,4 +50,8 @@
 </main>
 
 <%- include('partials/footer') %>
+<script>
+  window.currentCountry = "<%= JSON.stringify(post.country) %>";
+</script>
+
 <script src="/js/editpost.js"></script>

@@ -1,23 +1,21 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from "path";
+import { fileURLToPath } from "url";
 
 import userAuthRoutes from "./routes/userAuthRoutes.js";
 import countriesRoutes from "./routes/countries.js";
 import csrfProtection from "./middleware/csrf.js";
-import { generateToken as generateCSRFToken } from './config/csrf.js';
-import blogPostRoutes from "./routes/posts.js"
+import { generateToken as generateCSRFToken } from "./config/csrf.js";
+import blogPostRoutes from "./routes/posts.js";
 import authenticateJWT from "./middleware/jwtAuth.js";
-import PostService from './Services/PostService.js';
-
+import PostService from "./Services/PostService.js";
 
 const app = express();
 const PORT = 5005;
-
 
 app.use(cookieParser());
 app.use(express.json());
@@ -30,13 +28,14 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static("public"));
 
-
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: process.env.NODE_ENV === 'production' }
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: process.env.NODE_ENV === "production" },
+  })
+);
 
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
@@ -60,8 +59,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
 /*
  * Routes
  */
@@ -70,7 +67,7 @@ app.use("/", userAuthRoutes);
 
 app.get("/", async (req, res) => {
   res.redirect("/login");
-})
+});
 app.get("/login", async (req, res) => {
   // If the CSRF token is not yet stored in the session, generate and store it.
   if (!req.session.csrfToken) {
@@ -79,9 +76,9 @@ app.get("/login", async (req, res) => {
   const csrfToken = req.session.csrfToken;
 
   // Set the CSRF token cookie
-  res.cookie('csrf-token', csrfToken, {
+  res.cookie("csrf-token", csrfToken, {
     httpOnly: false,
-    sameSite: 'strict'
+    sameSite: "strict",
   });
 
   // Render the login view with the CSRF token
@@ -95,9 +92,9 @@ app.get("/signup", async (req, res) => {
   }
   const csrfToken = req.session.csrfToken;
 
-  res.cookie('csrf-token', csrfToken, {
+  res.cookie("csrf-token", csrfToken, {
     httpOnly: false,
-    sameSite: 'strict'
+    sameSite: "strict",
   });
 
   // Pass the csrfToken to the view explicitly
@@ -106,20 +103,18 @@ app.get("/signup", async (req, res) => {
 });
 
 app.get("/home", (req, res) => res.render("home"));
-app.get("/search", (req, res) => res.render("search"))
+app.get("/search", (req, res) => res.render("search"));
 
 app.use("/api", blogPostRoutes);
 app.use("/api", countriesRoutes);
 
-app.get("/explore-country", (req, res) => {
-  res.render("explore-country", { csrfToken: req.session.csrfToken });
-});
-
-
 
 
 app.get("/profile", authenticateJWT, (req, res) => {
-  res.render("profile", { userId: req.session.user.id, username: req.session.user.username });
+  res.render("profile", {
+    userId: req.session.user.id,
+    username: req.session.user.username,
+  });
 });
 
 app.get("/posts/new", authenticateJWT, (req, res) => {
@@ -132,7 +127,7 @@ app.get("/posts/:id/edit", authenticateJWT, async (req, res, next) => {
   try {
     // 1. Load the post
     const postResponse = await postService.getPostById(req.params.id);
-    const post = postResponse.data;         // unwrap the .data
+    const post = postResponse.data; // unwrap the .data
     if (!post) return res.status(404).send("Post not found");
 
     // 2. Ownership check
@@ -148,7 +143,7 @@ app.get("/posts/:id/edit", authenticateJWT, async (req, res, next) => {
     res.render("editpost", {
       post,
       userId: req.session.user.id,
-      csrfToken,                       // <-- your own token
+      csrfToken, // <-- your own token
     });
   } catch (err) {
     next(err);
@@ -158,7 +153,6 @@ app.get("/posts/:id/edit", authenticateJWT, async (req, res, next) => {
 app.get("/posts/:id", (req, res) => {
   res.render("viewpost", { postId: req.params.id });
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server Running on http://localhost:${PORT}`);

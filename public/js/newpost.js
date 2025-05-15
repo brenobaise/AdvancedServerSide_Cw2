@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const csrfToken = document.getElementById("csrfToken").value;
     const countrySelect = document.getElementById("countrySelect");
 
-    // 👇 Fetch and populate countries
+    //  Fetch and populate countries
     async function loadCountries() {
         try {
             const res = await fetch("/api/countries");
