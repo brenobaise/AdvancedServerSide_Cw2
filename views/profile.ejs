@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<main class="container">
+  <header class="profile-header">
+    <h2><%= username %>'s Posts</h2>
+    <a href="/posts/new" class="btn add-btn">+ Add New Post</a>
+  </header>
+
+  <ul
+    id="profilePosts"
+    data-username="<%= username %>"
+    data-user-id="<%= userId %>"
+    data-csrf-token="<%= csrfToken %>"
+    class="results"
+  >
+    <!-- JS will inject <li> items here -->
+  </ul>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/profile.js"></script>

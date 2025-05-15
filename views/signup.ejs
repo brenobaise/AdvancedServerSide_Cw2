@@ -15,7 +15,7 @@
         include('partials/message', { message: error }) %> <% } %>
 
         <form action="/signup" method="post">
-          <%- include('partials/_csrf') %>
+          <%- include('partials/csrf') %>
 
           <div class="form-group">
             <label for="email">Email:</label>

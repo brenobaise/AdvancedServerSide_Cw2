@@ -1,1 +1,3 @@
+<% if (typeof csrfToken !== 'undefined') { %>
 <input type="hidden" name="csrfToken" value="<%= csrfToken %>" />
+<% } %>

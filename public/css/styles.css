@@ -1,19 +1,84 @@
-      button {
-          padding: 8px 12px;
-          margin: 4px;
-          border: none;
-          background-color: #007bff;
-          color: white;
-          cursor: pointer;
-          border-radius: 5px;
-      }
+button {
+  padding: 8px 12px;
+  margin: 4px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
 
-      button:hover {
-          background-color: #0056b3;
-      }
+button:hover {
+  background-color: #0056b3;
+}
 
-          html,
-          body {
-              margin: 0;
-              padding: 0;
-          }
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Profile page */
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.btn.add-btn {
+  background: #28a745;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.btn.add-btn:hover {
+  background: #218838;
+}
+
+.post-item {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-title {
+  font-weight: bold;
+  text-decoration: none;
+  color: #004d99;
+}
+
+.post-title:hover {
+  text-decoration: underline;
+}
+
+.post-actions button {
+  margin-left: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  cursor: pointer;
+}
+
+.post-actions .edit-btn {
+  background: #ffc107;
+  color: white;
+}
+
+.post-actions .edit-btn:hover {
+  background: #e0a800;
+}
+
+.post-actions .delete-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.post-actions .delete-btn:hover {
+  background: #c82333;
+}

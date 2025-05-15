@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+
+<main class="container">
+  <h2>Create New Post</h2>
+  <form id="newPostForm" class="post-form">
+    <input
+      type="hidden"
+      name="csrfToken"
+      id="csrfToken"
+      value="<%= csrfToken %>"
+    />
+    <input type="hidden" id="auth_id" value="<%= userId %>" />
+
+    <label
+      >Title
+      <input type="text" name="title" required />
+    </label>
+
+    <label
+      >Country
+      <input type="text" name="country" required placeholder="e.g. Brazil" />
+    </label>
+
+    <label
+      >Date of Visit
+      <input type="date" name="date_of_visit" required />
+    </label>
+
+    <label
+      >Content
+      <textarea name="content" rows="6" required></textarea>
+    </label>
+
+    <button type="submit">Create Post</button>
+  </form>
+
+  <div id="msg"></div>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/newpost.js"></script>
