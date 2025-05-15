@@ -1,7 +1,10 @@
 const csrfProtection = (req, res, next) => {
     // have to put this route as an exempt because
     // otherwise csrfProtection will ask for a token
-    const exemptRoutes = ['/api/search'];
+    const exemptRoutes = [
+        '/api/search',
+        '/api/countries/search'
+    ];
 
     //  if the current request path is in the exempt list
     if (exemptRoutes.some(route => req.path.startsWith(route))) {

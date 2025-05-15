@@ -28,4 +28,25 @@ router.get("/countries", async (req, res) => {
     }
 });
 
+router.post("/countries/search", async (req, res) => {
+    const { country } = req.body;
+
+    try {
+        const response = await fetch("http://localhost:6005/api/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "x-api-key": process.env.COUNTRY_API_KEY
+            },
+            body: JSON.stringify({ country })
+        });
+
+        const data = await response.json();
+        res.json(data);
+    } catch (err) {
+        console.error("Proxy error:", err);
+        res.status(500).json({ error: "Failed to fetch country details" });
+    }
+});
+
 export default router;

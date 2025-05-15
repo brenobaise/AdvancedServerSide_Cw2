@@ -7,7 +7,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import userAuthRoutes from "./routes/userAuthRoutes.js";
-// import adminRoutes from "./routes/admin.js";
 import countriesRoutes from "./routes/countries.js";
 import csrfProtection from "./middleware/csrf.js";
 import { generateToken as generateCSRFToken } from './config/csrf.js';
@@ -112,17 +111,20 @@ app.get("/search", (req, res) => res.render("search"))
 app.use("/api", blogPostRoutes);
 app.use("/api", countriesRoutes);
 
+app.get("/explore-country", (req, res) => {
+  res.render("explore-country", { csrfToken: req.session.csrfToken });
+});
+
+
 
 
 app.get("/profile", authenticateJWT, (req, res) => {
   res.render("profile", { userId: req.session.user.id, username: req.session.user.username });
 });
 
-
 app.get("/posts/new", authenticateJWT, (req, res) => {
   res.render("newpost", { userId: req.session.user.id });
 });
-
 
 app.get("/posts/:id/edit", authenticateJWT, async (req, res, next) => {
   const postService = new PostService();
@@ -152,8 +154,6 @@ app.get("/posts/:id/edit", authenticateJWT, async (req, res, next) => {
     next(err);
   }
 });
-
-
 
 app.get("/posts/:id", (req, res) => {
   res.render("viewpost", { postId: req.params.id });
