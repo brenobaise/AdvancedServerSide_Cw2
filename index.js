@@ -110,6 +110,7 @@ app.get("/home", (req, res) => res.render("home"));
 app.get("/search", (req, res) => res.render("search"))
 
 app.use("/api", blogPostRoutes);
+app.use("/api", countriesRoutes);
 
 
 

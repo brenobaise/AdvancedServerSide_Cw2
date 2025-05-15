@@ -1,31 +1,31 @@
 import express from "express";
-// import apikeyMiddleware from "../middleware/ApiAuth.js";
 
 const router = express.Router();
 
-// searches for a country 
-router.post("/search", async (req, res) => {
-    const { country } = await req.body;
-
-    if (!country) {
-        return res.status(400).json({ error: "Insert a country name " });
-    }
-
+router.get("/countries", async (req, res) => {
     try {
-        const response = await fetch(
-            `https://restcountries.com/v3.1/name/${country}?fields=name,currencies,capital,languages,flags`
-        );
-
+        const response = await fetch("http://localhost:6005/api/all", {
+            headers: {
+                "x-api-key": process.env.COUNTRY_API_KEY
+            }
+        });
 
         if (!response.ok) {
-            throw new Error("Failed to fetch country data");
+            return res.status(response.status).json({ error: "Failed to fetch countries" });
         }
 
         const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            return res.status(500).json({ error: "Invalid data format from country API" });
+        }
+
         res.json(data);
+
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: err.message });
+        console.error("Proxy error:", err);
+        res.status(500).json({ error: "Internal proxy error" });
     }
 });
+
 export default router;
