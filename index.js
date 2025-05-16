@@ -8,10 +8,13 @@ import { fileURLToPath } from "url";
 
 import userAuthRoutes from "./routes/userAuthRoutes.js";
 import countriesRoutes from "./routes/countries.js";
+import blogPostRoutes from "./routes/posts.js";
+
+
 import csrfProtection from "./middleware/csrf.js";
 import { generateToken as generateCSRFToken } from "./config/csrf.js";
-import blogPostRoutes from "./routes/posts.js";
 import authenticateJWT from "./middleware/jwtAuth.js";
+
 import PostService from "./Services/PostService.js";
 
 const app = express();
@@ -102,13 +105,25 @@ app.get("/signup", async (req, res) => {
   res.render("signup", { csrfToken });
 });
 
-app.get("/home", (req, res) => res.render("home"));
+app.get("/home", (req, res) => {
+  // ensure CSRF token if they’re logged-in
+  if (req.session.user && !req.session.csrfToken) {
+    req.session.csrfToken = generateCSRFToken();
+    res.cookie("csrf-token", req.session.csrfToken, {
+      httpOnly: false,
+      sameSite: "strict",
+    });
+  }
+  res.render("home", {
+    csrfToken: req.session.csrfToken,            // may be undefined for anon
+    isAuthenticated: !!req.session.user,         // true/false
+  });
+});
+
 app.get("/search", (req, res) => res.render("search"));
 
 app.use("/api", blogPostRoutes);
 app.use("/api", countriesRoutes);
-
-
 
 app.get("/profile", authenticateJWT, (req, res) => {
   res.render("profile", {

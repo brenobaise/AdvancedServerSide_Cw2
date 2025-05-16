@@ -229,6 +229,55 @@ export default class PostDao {
             });
         });
     }
+    // add inside PostDao class
+    async incrementLikes({ post_id }) {
+        return new Promise((res, rej) => {
+            dbConnection.run(
+                `UPDATE posts SET likes_count = likes_count + 1 WHERE id = ?`,
+                [post_id],
+                function (err) {
+                    if (err) return rej(createResponse(false, null, err));
+                    res(createResponse(true));
+                }
+            );
+        });
+    }
+    async decrementLikes({ post_id }) {
+        return new Promise((res, rej) => {
+            dbConnection.run(
+                `UPDATE posts SET likes_count = likes_count - 1 WHERE id = ? AND likes_count > 0`,
+                [post_id],
+                function (err) {
+                    if (err) return rej(createResponse(false, null, err));
+                    res(createResponse(true));
+                }
+            );
+        });
+    }
+    async incrementDislikes({ post_id }) {
+        return new Promise((res, rej) => {
+            dbConnection.run(
+                `UPDATE posts SET dislikes_count = dislikes_count + 1 WHERE id = ?`,
+                [post_id],
+                function (err) {
+                    if (err) return rej(createResponse(false, null, err));
+                    res(createResponse(true));
+                }
+            );
+        });
+    }
+    async decrementDislikes({ post_id }) {
+        return new Promise((res, rej) => {
+            dbConnection.run(
+                `UPDATE posts SET dislikes_count = dislikes_count - 1 WHERE id = ? AND dislikes_count > 0`,
+                [post_id],
+                function (err) {
+                    if (err) return rej(createResponse(false, null, err));
+                    res(createResponse(true));
+                }
+            );
+        });
+    }
 
 
 }

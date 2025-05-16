@@ -1,6 +1,7 @@
 import express from "express"
 import PostService from "../Services/PostService.js";
 import authenticateJWT from "../middleware/jwtAuth.js";
+import ReactionService from "../Services/ReactionService.js";
 
 
 const router = express.Router();
@@ -119,6 +120,37 @@ router.delete("/posts/:id", async (req, res) => {
         });
     }
 });
+
+router.post(
+    "/posts/:id/reactions",
+    authenticateJWT,
+    async (req, res, next) => {
+
+        const reactionService = new ReactionService()
+        const post_id = Number(req.params.id);
+        const user_id = req.session.user?.id;
+        const { reaction } = req.body;
+
+        if (!user_id) {
+            return res
+                .status(401)
+                .json({ success: false, error: "Not authenticated" });
+        }
+
+        try {
+            const result = await reactionService.react({ post_id, user_id, reaction });
+            if (!result.success) {
+                return res.status(400).json(result);
+            }
+            // Return updated counts too, if you like:
+            // you could fetch the post here and include likes_count/dislikes_count
+            return res.json(result);
+        } catch (err) {
+            next(err);
+        }
+    }
+);
+
 
 export default router;
 

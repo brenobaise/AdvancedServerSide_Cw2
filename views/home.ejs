@@ -9,7 +9,12 @@
   <body>
     <%- include('partials/header') %>
 
-    <main class="container">
+    <main
+      class="container"
+      id="homeContainer"
+      data-csrf-token="<%= csrfToken || '' %>"
+      data-authenticated="<%= isAuthenticated %>"
+    >
       <!-- LEFT COLUMN: Explore Country -->
       <div class="left-column">
         <h2>Explore a Country</h2>
