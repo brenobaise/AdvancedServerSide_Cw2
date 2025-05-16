@@ -115,8 +115,8 @@ app.get("/home", (req, res) => {
     });
   }
   res.render("home", {
-    csrfToken: req.session.csrfToken,            // may be undefined for anon
-    isAuthenticated: !!req.session.user,         // true/false
+    csrfToken: req.session.csrfToken,
+    isAuthenticated: !!req.session.user,
   });
 });
 
