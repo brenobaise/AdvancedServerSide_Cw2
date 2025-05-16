@@ -1,4 +1,3 @@
-import { rejects } from "assert";
 import { dbConnection } from "../Databases/SQLConn.js";
 import { createResponse } from "../Utils/utils.js";
 
@@ -150,8 +149,6 @@ export default class PostDao {
         });
     }
 
-
-
     async countSearchResults({ searchTerm, filterBy }) {
         return new Promise((resolve, reject) => {
             if (!["country", "username"].includes(filterBy)) {
@@ -229,7 +226,7 @@ export default class PostDao {
             });
         });
     }
-    // add inside PostDao class
+
     async incrementLikes({ post_id }) {
         return new Promise((res, rej) => {
             dbConnection.run(

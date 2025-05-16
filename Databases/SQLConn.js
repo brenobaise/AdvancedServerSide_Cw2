@@ -15,11 +15,10 @@ export const dbConnection = new sqlite3.Database(dbPath, (err) => {
     console.error("Database connection error:", err.message);
   } else {
     console.log("Connected to SQLite database.");
-    initialiseDatabase(); // Run setup function
+    initialiseDatabase();
   }
 });
 
-// Create tables if they don't exist
 // Create tables if they don't exist
 function initialiseDatabase() {
   dbConnection.serialize(() => {
@@ -96,7 +95,6 @@ function initialiseDatabase() {
       }
     );
 
-    // Comments table (optional, but useful for "most commented" sorting)
     dbConnection.run(
       `CREATE TABLE IF NOT EXISTS comments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

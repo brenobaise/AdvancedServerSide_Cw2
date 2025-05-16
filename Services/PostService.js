@@ -39,7 +39,7 @@ export default class PostService {
     }
 
     async searchPosts({ searchTerm, filterBy, page = 1, limit = 10 }) {
-        // 1) Get total count
+        //  Get total count
         const countRes = await this.postDao.countSearchResults({ searchTerm, filterBy });
         if (!countRes.success) return countRes;
 
@@ -48,14 +48,13 @@ export default class PostService {
             return { success: false, data: "No posts found matching the search criteria." };
         }
 
-        // 2) Get the page of rows
+        // Get the page of rows
         const rowsRes = await this.postDao.searchPosts({ searchTerm, filterBy, page, limit });
         if (!rowsRes.success) return rowsRes;
 
-        // 3) Compute total pages
+        //  Compute total pages
         const totalPages = Math.ceil(totalItems / limit);
 
-        // 4) Wrap into a single payload
         return {
             success: true,
             data: {

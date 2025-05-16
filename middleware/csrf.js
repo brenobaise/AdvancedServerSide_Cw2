@@ -18,7 +18,7 @@ const csrfProtection = (req, res, next) => {
 
     // Retrieve the token from the request body or header
     const submittedToken =
-        req.body.csrfToken ||        // <input name="csrfToken" />
+        req.body.csrfToken ||
         req.body._csrf ||            // support fallback name
         req.headers['x-csrf-token']; // for AJAX requests
 
