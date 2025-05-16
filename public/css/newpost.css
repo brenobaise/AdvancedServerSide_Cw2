@@ -1,0 +1,42 @@
+/* Narrow container for form pages */
+.narrow-form {
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+/* Form card styling */
+.form-card {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Spacing for form fields */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Message styling */
+.form-message {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #cc0000;
+}

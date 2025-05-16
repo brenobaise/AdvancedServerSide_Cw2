@@ -1,55 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Log in</title>
-  <link rel="stylesheet" href="/css/login.css" />
-  
-</head>
-<body>
-  <div class="container">
-    <div class="card">
-      <h1 class="text-center">Log in</h1>
-      
-      <% if (typeof error !== 'undefined' && error) { %>
-        <%- include('partials/message', { message: error }) %>
-      <% } %>
-      
-      <form action="/login" method="post">
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input 
-            class="form-control" 
-            type="text" 
-            id="email" 
-            name="email" 
-            placeholder="yourname@hotmail.com" 
-            required
-          >
-        </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input 
-            class="form-control" 
-            type="password" 
-            id="password" 
-            name="password" 
-            placeholder="Your password" 
-            required
-          >
-        </div>
-        
-        <%- include('partials/_csrf') %>
-        
-        <div class="form-group text-center">
-          <button class="btn"  type="submit">Login</button>
-        </div>
-        <div class="form-group text-center">
-            <a href="/signup" class="btn ">Sign up</a>
-        </div>
-      </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log in</title>
+    <link rel="stylesheet" href="/css/login.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h1 class="text-center">Log in</h1>
+
+        <% if (typeof error !== 'undefined' && error) { %> <%-
+        include('partials/message', { message: error }) %> <% } %>
+
+        <form action="/login" method="post">
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input
+              class="form-control"
+              type="text"
+              id="email"
+              name="email"
+              placeholder="yourname@hotmail.com"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input
+              class="form-control"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Your password"
+              required
+            />
+          </div>
+
+          <%- include('partials/csrf') %>
+
+          <div class="form-group text-center">
+            <button class="btn" type="submit">Login</button>
+          </div>
+          <div class="form-group text-center">
+            <a href="/signup" class="btn">Sign up</a>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

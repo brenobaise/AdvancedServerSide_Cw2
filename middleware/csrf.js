@@ -1,7 +1,10 @@
 const csrfProtection = (req, res, next) => {
     // have to put this route as an exempt because
     // otherwise csrfProtection will ask for a token
-    const exemptRoutes = ['/api/search'];
+    const exemptRoutes = [
+        '/api/search',
+        '/api/countries/search'
+    ];
 
     //  if the current request path is in the exempt list
     if (exemptRoutes.some(route => req.path.startsWith(route))) {
@@ -14,7 +17,11 @@ const csrfProtection = (req, res, next) => {
     }
 
     // Retrieve the token from the request body or header
-    const submittedToken = req.body.csrfToken || req.headers['x-csrf-token'];
+    const submittedToken =
+        req.body.csrfToken ||        // <input name="csrfToken" />
+        req.body._csrf ||            // support fallback name
+        req.headers['x-csrf-token']; // for AJAX requests
+
 
     // Compare it to the token stored in the session
     if (!submittedToken || submittedToken !== req.session.csrfToken) {

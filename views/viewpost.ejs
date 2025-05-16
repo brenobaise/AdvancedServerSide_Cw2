@@ -1,0 +1,13 @@
+<%- include('partials/header') %>
+
+<main class="container">
+  <!-- data-post-id and data-user-id come from EJS -->
+  <div
+    id="postDetail"
+    data-post-id="<%= postId %>"
+    data-user-id="<%= user ? user.id : '' %>"
+  ></div>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/viewpost.js"></script>

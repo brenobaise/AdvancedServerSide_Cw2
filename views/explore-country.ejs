@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+
+<main class="container">
+  <h2>Explore a Country</h2>
+
+  <label for="countryDropdown">Select a country:</label>
+  <select id="countryDropdown">
+    <option value="">-- Choose a country --</option>
+  </select>
+
+  <div id="countryDetails" class="country-info" style="margin-top: 20px">
+    <!-- Flag, currency and capital will be displayed here -->
+  </div>
+</main>
+
+<%- include('partials/footer') %>
+<script src="/js/explore-country.js"></script>

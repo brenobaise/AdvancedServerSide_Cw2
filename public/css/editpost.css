@@ -1,0 +1,79 @@
+/* === Edit Post Page === */
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  max-width: 700px;
+  margin: 2rem auto;
+}
+
+.post-form h2 {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.post-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.post-form input[type="text"],
+.post-form input[type="date"],
+.post-form select,
+.post-form textarea {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 0.4rem;
+  background-color: #fdfdfd;
+  resize: vertical;
+}
+
+.post-form textarea {
+  min-height: 150px;
+}
+
+.post-form button[type="submit"],
+.post-form button[type="button"] {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.post-form button[type="submit"] {
+  background-color: #0077cc;
+  color: white;
+}
+
+.post-form button[type="submit"]:hover {
+  background-color: #005fa3;
+}
+
+.post-form button[type="button"] {
+  background-color: #d9534f;
+  color: white;
+}
+
+.post-form button[type="button"]:hover {
+  background-color: #c9302c;
+}
+
+#msg {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+}

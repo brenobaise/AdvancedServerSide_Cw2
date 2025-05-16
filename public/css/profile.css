@@ -1,0 +1,71 @@
+/* Two-column layout */
+.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Sidebar style */
+.sidebar {
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Content area */
+.content-area {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Reusable button */
+.btn {
+  background-color: #0077cc;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn:hover {
+  background-color: #005fa3;
+}
+
+.full-width {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Blog-style post list */
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.post-list li {
+  background-color: #f5faff;
+  border: 1px solid #dceeff;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.post-list h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.post-list p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}

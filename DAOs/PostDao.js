@@ -33,7 +33,8 @@ export default class PostDao {
                     if (this.changes === 0) {
                         return resolve(createResponse(false, "No Records Inserted"))
                     }
-                    resolve(createResponse(true, "Post created successfully", { id: this.lastID }, 201))
+                    resolve(createResponse(true, { id: this.lastID }, null, 201
+                    ))
                 });
         });
     }
@@ -95,6 +96,184 @@ export default class PostDao {
                             resolve(createResponse(true, "Post and its reactions deleted"));
                         }
                     );
+                }
+            );
+        });
+    }
+
+
+    // In DAOs/PostDao.js
+    async searchPosts({ searchTerm, filterBy, page = 1, limit = 10 }) {
+        return new Promise((resolve, reject) => {
+            // only allow the two filters
+            if (!["country", "username"].includes(filterBy)) {
+                return resolve(createResponse(false, null, "Invalid filterBy value"));
+            }
+
+            // build WHERE + params
+            let where;
+            const params = [];
+            if (filterBy === "country") {
+                where = "WHERE LOWER(p.country) LIKE ?";
+                params.push(`%${searchTerm.trim().toLowerCase()}%`);
+            } else {
+                where = "WHERE u.username LIKE ?";
+                params.push(`%${searchTerm.trim()}%`);
+            }
+
+            const offset = (page - 1) * limit;
+            const sql = `
+        SELECT
+          p.id,
+          p.title,
+          u.username   AS author,
+          p.date_posted,
+          p.country
+        FROM posts p
+        JOIN users u
+          ON p.author_id = u.id
+        ${where}
+        ORDER BY p.date_posted DESC
+        LIMIT ? OFFSET ?
+      `;
+            params.push(limit, offset);
+
+            dbConnection.all(sql, params, (err, rows) => {
+                if (err) {
+                    return reject(createResponse(false, null, err));
+                }
+                if (!rows || rows.length === 0) {
+                    return resolve(createResponse(false, "No posts found matching the search criteria."));
+                }
+                resolve(createResponse(true, rows));
+            });
+        });
+    }
+
+
+
+    async countSearchResults({ searchTerm, filterBy }) {
+        return new Promise((resolve, reject) => {
+            if (!["country", "username"].includes(filterBy)) {
+                return resolve(createResponse(false, null, "Invalid filterBy value"));
+            }
+
+            let whereClause;
+            const params = [];
+
+            if (filterBy === "country") {
+                whereClause = "WHERE LOWER(country) LIKE ?";
+                params.push(`%${searchTerm.trim().toLowerCase()}%`);
+            } else {
+                whereClause = "WHERE username LIKE ?";
+                params.push(`%${searchTerm.trim()}%`);
+            }
+
+            const sql = `SELECT COUNT(*) AS count FROM posts p
+                   JOIN users u ON p.author_id = u.id
+                   ${whereClause}`;
+
+            dbConnection.get(sql, params, (err, row) => {
+                if (err) return reject(createResponse(false, null, err));
+                resolve(createResponse(true, row.count));
+            });
+        });
+    }
+
+    async getPostsSorted({ sortBy = "newest", page = 1, limit = 10 }) {
+        return new Promise((resolve, reject) => {
+            const offset = (page - 1) * limit;
+            let sql, params;
+
+            if (sortBy === "newest") {
+                sql = `
+          SELECT p.id, p.title, u.username AS author,
+                 p.date_posted, p.country, p.likes_count
+            FROM posts p
+            JOIN users u ON p.author_id = u.id
+           ORDER BY p.date_posted DESC
+           LIMIT ? OFFSET ?`;
+                params = [limit, offset];
+
+            } else if (sortBy === "liked") {
+                sql = `
+          SELECT p.id, p.title, u.username AS author,
+                 p.date_posted, p.country, p.likes_count
+            FROM posts p
+            JOIN users u ON p.author_id = u.id
+           ORDER BY p.likes_count DESC, p.date_posted DESC
+           LIMIT ? OFFSET ?`;
+                params = [limit, offset];
+
+            } else if (sortBy === "commented") {
+                sql = `
+          SELECT p.id, p.title, u.username AS author,
+                 p.date_posted, p.country,
+                 p.likes_count,
+                 COUNT(c.id) AS comment_count
+            FROM posts p
+            JOIN users u   ON p.author_id = u.id
+            LEFT JOIN comments c ON c.post_id = p.id
+           GROUP BY p.id
+           ORDER BY comment_count DESC, p.date_posted DESC
+           LIMIT ? OFFSET ?`;
+                params = [limit, offset];
+
+            } else {
+                return resolve(createResponse(false, null, "Invalid sortBy value"));
+            }
+
+            dbConnection.all(sql, params, (err, rows) => {
+                if (err) return reject(createResponse(false, null, err));
+                resolve(createResponse(true, rows));
+            });
+        });
+    }
+    // add inside PostDao class
+    async incrementLikes({ post_id }) {
+        return new Promise((res, rej) => {
+            dbConnection.run(
+                `UPDATE posts SET likes_count = likes_count + 1 WHERE id = ?`,
+                [post_id],
+                function (err) {
+                    if (err) return rej(createResponse(false, null, err));
+                    res(createResponse(true));
+                }
+            );
+        });
+    }
+    async decrementLikes({ post_id }) {
+        return new Promise((res, rej) => {
+            dbConnection.run(
+                `UPDATE posts SET likes_count = likes_count - 1 WHERE id = ? AND likes_count > 0`,
+                [post_id],
+                function (err) {
+                    if (err) return rej(createResponse(false, null, err));
+                    res(createResponse(true));
+                }
+            );
+        });
+    }
+    async incrementDislikes({ post_id }) {
+        return new Promise((res, rej) => {
+            dbConnection.run(
+                `UPDATE posts SET dislikes_count = dislikes_count + 1 WHERE id = ?`,
+                [post_id],
+                function (err) {
+                    if (err) return rej(createResponse(false, null, err));
+                    res(createResponse(true));
+                }
+            );
+        });
+    }
+    async decrementDislikes({ post_id }) {
+        return new Promise((res, rej) => {
+            dbConnection.run(
+                `UPDATE posts SET dislikes_count = dislikes_count - 1 WHERE id = ? AND dislikes_count > 0`,
+                [post_id],
+                function (err) {
+                    if (err) return rej(createResponse(false, null, err));
+                    res(createResponse(true));
                 }
             );
         });

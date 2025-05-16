@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Home • Travel Blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/home.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main
+      class="container"
+      id="homeContainer"
+      data-csrf-token="<%= csrfToken || '' %>"
+      data-authenticated="<%= isAuthenticated %>"
+    >
+      <!-- LEFT COLUMN: Explore Country -->
+      <div class="left-column">
+        <h2>Explore a Country</h2>
+        <label for="countryDropdown">Select a Country:</label>
+        <select
+          id="countryDropdown"
+          style="width: 100%; padding: 0.5rem; margin-bottom: 1rem"
+        >
+          <option value="">-- Choose --</option>
+        </select>
+
+        <div id="countryDetails">
+          <!-- Flag, Capital, Currency will be displayed here -->
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Blog Posts -->
+      <div class="right-column">
+        <section class="home-intro">
+          <h2>Discover Posts</h2>
+          <div class="sort-controls">
+            <label for="sortBy">Sort By:</label>
+            <select id="sortBy">
+              <option value="newest">Newest</option>
+              <option value="liked">Most Liked</option>
+              <option value="commented">Most Commented</option>
+            </select>
+          </div>
+        </section>
+
+        <ul id="postList" class="results"></ul>
+
+        <div class="pagination">
+          <button id="prevBtn" type="button">Previous</button>
+          <span id="pageInfo"></span>
+          <button id="nextBtn" type="button">Next</button>
+        </div>
+      </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/home.js"></script>
+    <script src="/js/explore-country.js"></script>
+  </body>
+</html>

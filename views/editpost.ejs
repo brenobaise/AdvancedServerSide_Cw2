@@ -1,0 +1,57 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/css/editpost.css" />
+<main class="container">
+  <form id="editPostForm" class="post-form">
+    <h2>Edit Post</h2>
+
+    <!-- CSRF token for AJAX -->
+    <input
+      type="hidden"
+      id="csrfToken"
+      name="csrfToken"
+      value="<%= csrfToken %>"
+    />
+    <!-- Author ID and Post ID for payload -->
+    <input type="hidden" id="auth_id" value="<%= userId %>" />
+    <input type="hidden" id="post_id" value="<%= post.id %>" />
+
+    <label>
+      Title <input type="text" name="title" required value="<%-
+      post.title.replace(/"/g, '&quot;') %>" />
+    </label>
+
+    <div class="form-group">
+      <label for="countrySelect">Country</label>
+      <select name="country" id="countrySelect" required>
+        <option value="">Loading countries…</option>
+      </select>
+    </div>
+
+    <label>
+      Date of Visit
+      <input
+        type="date"
+        name="date_of_visit"
+        required
+        value="<%= post.date_of_visit %>"
+      />
+    </label>
+
+    <label>
+      Content
+      <textarea name="content" rows="6" required><%- post.content %></textarea>
+    </label>
+
+    <button type="submit">Save Changes</button>
+    <button type="button" id="deleteBtn">Delete Post</button>
+  </form>
+
+  <div id="msg"></div>
+</main>
+
+<%- include('partials/footer') %>
+<script>
+  window.currentCountry = "<%= JSON.stringify(post.country) %>";
+</script>
+
+<script src="/js/editpost.js"></script>

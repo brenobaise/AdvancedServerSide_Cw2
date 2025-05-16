@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Create New Post • Travel Blog</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/newpost.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main class="container narrow-form">
+      <section class="form-card">
+        <h2 class="">Create a New Travel Post</h2>
+        <form id="newPostForm" class="post-form">
+          <!-- CSRF & Author ID -->
+          <input
+            type="hidden"
+            name="csrfToken"
+            id="csrfToken"
+            value="<%= csrfToken %>"
+          />
+          <input type="hidden" id="auth_id" value="<%= userId %>" />
+
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              required
+              placeholder="e.g. My Adventure in Japan"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="countrySelect">Country</label>
+            <select name="country" id="countrySelect" required>
+              <option value="">Loading countries…</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="date_of_visit">Date of Visit</label>
+            <input
+              type="date"
+              name="date_of_visit"
+              id="date_of_visit"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="content">Content</label>
+            <textarea
+              name="content"
+              id="content"
+              rows="6"
+              required
+              placeholder="Share your experience..."
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn full-width">Create Post</button>
+        </form>
+
+        <div id="msg" class="form-message"></div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/newpost.js"></script>
+  </body>
+</html>

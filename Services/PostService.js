@@ -37,4 +37,44 @@ export default class PostService {
         }
         return await this.postDao.delete({ post_id, auth_id });
     }
+
+    async searchPosts({ searchTerm, filterBy, page = 1, limit = 10 }) {
+        // 1) Get total count
+        const countRes = await this.postDao.countSearchResults({ searchTerm, filterBy });
+        if (!countRes.success) return countRes;
+
+        const totalItems = countRes.data;
+        if (totalItems === 0) {
+            return { success: false, data: "No posts found matching the search criteria." };
+        }
+
+        // 2) Get the page of rows
+        const rowsRes = await this.postDao.searchPosts({ searchTerm, filterBy, page, limit });
+        if (!rowsRes.success) return rowsRes;
+
+        // 3) Compute total pages
+        const totalPages = Math.ceil(totalItems / limit);
+
+        // 4) Wrap into a single payload
+        return {
+            success: true,
+            data: {
+                posts: rowsRes.data,
+                meta: {
+                    page,
+                    limit,
+                    totalItems,
+                    totalPages
+                }
+            }
+        };
+    }
+
+
+
+
+    async getPosts({ sortBy, page, limit }) {
+        return await this.postDao.getPostsSorted({ sortBy, page, limit });
+    }
+
 }

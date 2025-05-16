@@ -55,7 +55,7 @@ router.post("/login", async (req, res) => {
       req.session.csrfToken = generateCSRFToken();
     }
 
-    res.redirect("/api/admin/dashboard");
+    res.redirect("/home");
   } catch (err) {
     res.status(500).json({
       error: err.message

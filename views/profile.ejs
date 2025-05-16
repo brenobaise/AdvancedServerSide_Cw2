@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= username %>'s Profile • Travel Blog</title>
+    <link rel="stylesheet" href="/css/profile.css" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main class="container two-column-layout">
+      <!-- Sidebar Section -->
+      <section class="sidebar">
+        <h2>Your Profile</h2>
+        <p>Welcome, <strong><%= username %></strong>!</p>
+        <a href="/posts/new" class="btn full-width">+ Add New Post</a>
+      </section>
+
+      <!-- Main Posts Section -->
+      <section class="content-area">
+        <header class="section-header">
+          <h2><%= username %>'s Posts</h2>
+        </header>
+
+        <ul
+          id="profilePosts"
+          data-username="<%= username %>"
+          data-user-id="<%= userId %>"
+          data-csrf-token="<%= csrfToken %>"
+          class="results post-list"
+        >
+          <!-- Posts will be inserted by JS -->
+        </ul>
+      </section>
+    </main>
+    <%- include('partials/footer') %>
+
+    <script src="/js/profile.js"></script>
+  </body>
+</html>
