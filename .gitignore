@@ -1,5 +1,4 @@
 # Node modules
-node_modules/
 
 # Logs
 logs
@@ -9,7 +8,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # Environment variables
-.env
 
 # OS and IDE files
 .DS_Store
